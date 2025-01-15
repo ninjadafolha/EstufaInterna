@@ -80,6 +80,8 @@ I2C_HandleTypeDef hi2c1;
 
 UART_HandleTypeDef huart2;
 
+SPI_HandleTypeDef hspi1;
+
 /* USER CODE BEGIN PV */
 static const uint16_t BH1750_ADDR = 0x23;
 uint8_t buff[2];
@@ -92,6 +94,7 @@ static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_ADC1_Init(void);
+static void MX_SPI1_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -141,6 +144,7 @@ int main(void)
   MX_USART2_UART_Init();
   MX_I2C1_Init();
   MX_ADC1_Init();
+  MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
 
   strcpy((char*)buf, "Start!\r\n");
@@ -443,6 +447,24 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+static void MX_SPI1_Init(){
+
+  hspi1.Instance = SPI1;
+  hspi1.Init.Mode = SPI_MODE_MASTER;
+  hspi1.Init.Direction = SPI_DIRECTION_2LINES;
+  hspi1.Init.DataSize = SPI_DATASIZE_8BIT;
+  hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
+  hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
+  hspi1.Init.NSS = SPI_NSS_SOFT;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
+  hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
+  hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
+  hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+  hspi1.Init.CRCPolynomial = 10;
+  if(HAL_SPI_Init(&hspi1) != HAL_OK)
+    Error_Handler();
+}
 
 /* START OF BH1750 COMMUNICATION FUNCTIONS*/
 /*HAL_StatusTypeDef BH1750_send_command(BH1750_device_t* dev, uint8_t cmd)
