@@ -151,7 +151,7 @@ int main(void)
   HAL_UART_Transmit(&huart2, buf, strlen((char*)buf), HAL_MAX_DELAY);
   //strcpy((char*)buf, "Hello!\r\n");
 
-  i2c_buf[0] = 0b00010000;
+  
   /*ret = HAL_I2C_Master_Transmit(&hi2c1, BH1750_GROUND_ADDR_WRITE, i2c_buf, 1, 200);
   if(ret == HAL_OK){ 
       strcpy((char*)serialbuf, "");
@@ -162,6 +162,29 @@ int main(void)
       strcpy((char*)serialbuf, "Error Power\r\n");
       HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
   }*/
+    i2c_buf[0] = 0b00000001;
+    ret = HAL_I2C_Master_Transmit(&hi2c1, (uint16_t)0b01000110, i2c_buf, 1, 200);
+    if(ret == HAL_OK){      
+      strcpy((char*)serialbuf, "");
+      strcpy((char*)serialbuf, "Transmited 1\r\n");
+      HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
+    }else{
+        strcpy((char*)serialbuf, "");
+        strcpy((char*)serialbuf, "Failed Power\r\n");
+        HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
+    }
+
+    i2c_buf[0] = 0b00010000;
+    ret = HAL_I2C_Master_Transmit(&hi2c1, (uint16_t)0b01000110, i2c_buf, 1, 200);
+    if(ret == HAL_OK){      
+      strcpy((char*)serialbuf, "");
+      strcpy((char*)serialbuf, "Transmited 2\r\n");
+      HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
+    }else{
+        strcpy((char*)serialbuf, "");
+        strcpy((char*)serialbuf, "Failed data\r\n");
+        HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
+    }
 
   /* USER CODE END 2 */
 
@@ -214,21 +237,20 @@ int main(void)
     //HAL_UART_Transmit(&huart2, buf, strlen((char*)buf), HAL_MAX_DELAY);
     //HAL_Delay(500);
     
-    ret = HAL_I2C_Master_Transmit(&hi2c1, (uint16_t)0b01000110, i2c_buf, 1, 200);
-    if(ret == HAL_OK){      
-      strcpy((char*)serialbuf, "");
-      strcpy((char*)serialbuf, "Transmited\r\n");
-      HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
-    }else{
-        strcpy((char*)serialbuf, "");
-        strcpy((char*)serialbuf, "Failed\r\n");
-        HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
-    }
 
+    strcpy((char*)i2c_buf, "");
     ret = HAL_I2C_Master_Receive(&hi2c1, (uint16_t)0b01000111, i2c_buf, 2, 200);
     if(ret == HAL_OK){      
-      size_len = sprintf(str, "%lu\r\n", i2c_buf);
-      HAL_UART_Transmit(&huart2, (uint8_t*)str, size_len, HAL_MAX_DELAY);
+      //size_len = sprintf(str, "%lu\r\n", i2c_buf);
+      //uint8_t a = i2c_buf[0];
+      //uint8_t b = i2c_buf[1];
+      strcpy((char*)serialbuf, "");
+      strcpy((char*)serialbuf, "Received Data\r\n");
+      HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
+      uint16_t raw_lux = (i2c_buf[0] << 8 | i2c_buf[1]);
+      float lux = raw_lux/1.2;
+      sprintf(str, sizeof(str), "<%.2f>", lux);
+      HAL_UART_Transmit(&huart2, (uint8_t*)str, strlen(str), HAL_MAX_DELAY);
     }else{
         strcpy((char*)serialbuf, "");
         strcpy((char*)serialbuf, "Failed\r\n");
