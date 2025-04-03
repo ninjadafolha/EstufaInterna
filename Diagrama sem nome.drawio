@@ -4,46 +4,46 @@
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="FwsmiJd8IDW5yg_aFgd4-38" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="FwsmiJd8IDW5yg_aFgd4-6" target="FwsmiJd8IDW5yg_aFgd4-36">
+        <mxCell id="FwsmiJd8IDW5yg_aFgd4-38" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="FwsmiJd8IDW5yg_aFgd4-6" target="FwsmiJd8IDW5yg_aFgd4-36" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="FwsmiJd8IDW5yg_aFgd4-6" value="uc_MonitorStove" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="FwsmiJd8IDW5yg_aFgd4-6" value="uc_MonitorStove" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="310" y="160" width="140" height="70" as="geometry" />
         </mxCell>
-        <mxCell id="FwsmiJd8IDW5yg_aFgd4-14" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="FwsmiJd8IDW5yg_aFgd4-7" target="FwsmiJd8IDW5yg_aFgd4-6">
+        <mxCell id="FwsmiJd8IDW5yg_aFgd4-14" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="FwsmiJd8IDW5yg_aFgd4-7" target="FwsmiJd8IDW5yg_aFgd4-6" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="FwsmiJd8IDW5yg_aFgd4-7" value="LightSensing" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
+        <mxCell id="FwsmiJd8IDW5yg_aFgd4-7" value="LightSensing" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" parent="1" vertex="1">
           <mxGeometry x="180" y="110" width="30" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="FwsmiJd8IDW5yg_aFgd4-20" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="FwsmiJd8IDW5yg_aFgd4-17" target="FwsmiJd8IDW5yg_aFgd4-6">
+        <mxCell id="FwsmiJd8IDW5yg_aFgd4-20" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="FwsmiJd8IDW5yg_aFgd4-17" target="FwsmiJd8IDW5yg_aFgd4-6" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="FwsmiJd8IDW5yg_aFgd4-17" value="UmiditySensing" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
+        <mxCell id="FwsmiJd8IDW5yg_aFgd4-17" value="UmiditySensing" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" parent="1" vertex="1">
           <mxGeometry x="560" y="120" width="30" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="FwsmiJd8IDW5yg_aFgd4-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.22;entryY=0.967;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="FwsmiJd8IDW5yg_aFgd4-21" target="FwsmiJd8IDW5yg_aFgd4-6">
+        <mxCell id="FwsmiJd8IDW5yg_aFgd4-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.22;entryY=0.967;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="FwsmiJd8IDW5yg_aFgd4-21" target="FwsmiJd8IDW5yg_aFgd4-6" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="FwsmiJd8IDW5yg_aFgd4-21" value="CO2ConcentrationSensing" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
+        <mxCell id="FwsmiJd8IDW5yg_aFgd4-21" value="CO2ConcentrationSensing" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" parent="1" vertex="1">
           <mxGeometry x="180" y="260" width="30" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="FwsmiJd8IDW5yg_aFgd4-24" value="SoilUmiditySensing" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
+        <mxCell id="FwsmiJd8IDW5yg_aFgd4-24" value="SoilUmiditySensing" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" parent="1" vertex="1">
           <mxGeometry x="520" y="260" width="30" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="FwsmiJd8IDW5yg_aFgd4-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.714;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="FwsmiJd8IDW5yg_aFgd4-24" target="FwsmiJd8IDW5yg_aFgd4-6">
+        <mxCell id="FwsmiJd8IDW5yg_aFgd4-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.714;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="FwsmiJd8IDW5yg_aFgd4-24" target="FwsmiJd8IDW5yg_aFgd4-6" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="FwsmiJd8IDW5yg_aFgd4-36" value="TransmitData" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
+        <mxCell id="FwsmiJd8IDW5yg_aFgd4-36" value="TransmitData" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" parent="1" vertex="1">
           <mxGeometry x="365" y="340" width="30" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="FwsmiJd8IDW5yg_aFgd4-42" value="&lt;h4&gt;act_L1_MonitorStove&lt;br&gt;&lt;/h4&gt;&lt;div&gt;Purpose:&lt;/div&gt;&lt;div&gt;Monitor stove by receiving data from external sensor and proving information.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Description:&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="html=1;whiteSpace=wrap;align=left;rotation=0;" vertex="1" parent="1">
+        <mxCell id="FwsmiJd8IDW5yg_aFgd4-42" value="&lt;h4&gt;act_L1_MonitorStove&lt;br&gt;&lt;/h4&gt;&lt;div&gt;Purpose:&lt;/div&gt;&lt;div&gt;Monitor stove by receiving data from external sensor and proving information.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Description:&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="html=1;whiteSpace=wrap;align=left;rotation=0;" parent="1" vertex="1">
           <mxGeometry x="340" y="470" width="140" height="380" as="geometry" />
         </mxCell>
-        <mxCell id="FwsmiJd8IDW5yg_aFgd4-43" value="act_Input_LightSensing" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+        <mxCell id="FwsmiJd8IDW5yg_aFgd4-43" value="act_Input_LightSensing" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="50" y="470" width="150" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="FwsmiJd8IDW5yg_aFgd4-44" value="act_Input_LightSensing" style="html=1;whiteSpace=wrap;" vertex="1" parent="1">
+        <mxCell id="FwsmiJd8IDW5yg_aFgd4-44" value="act_Input_LightSensing" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="50" y="550" width="150" height="50" as="geometry" />
         </mxCell>
       </root>
