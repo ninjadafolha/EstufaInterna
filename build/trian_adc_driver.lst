@@ -1,0 +1,271 @@
+ARM GAS  C:\Users\gabri\AppData\Local\Temp\ccYNMfjV.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"trian_adc_driver.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c"
+  20              		.section	.text.ADC_Init,"ax",%progbits
+  21              		.align	1
+  22              		.global	ADC_Init
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	ADC_Init:
+  28              	.LVL0:
+  29              	.LFB239:
+   1:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c **** /**
+   2:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   ******************************************************************************
+   3:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   * @file    trian_adc_driver.c
+   4:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   * @author  Trian Application Team
+   5:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   * @brief   ADC module driver.
+   6:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   *    
+   7:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   * 
+   8:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   *
+   9:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   *    
+  10:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   *
+  11:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   *      
+  12:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   @verbatim     
+  13:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   ==============================================================================
+  14:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****                         ##### How to use this driver #####
+  15:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   ==============================================================================
+  16:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   [..]
+  17:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c **** 
+  18:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c **** 
+  19:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   @endverbatim
+  20:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   ******************************************************************************
+  21:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   * @attention
+  22:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   *
+  23:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c **** 
+  24:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   *
+  25:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   ******************************************************************************
+  26:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   */ 
+  27:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c **** 
+  28:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c **** 
+  29:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c **** #include "stm32f4xx_hal.h"
+ARM GAS  C:\Users\gabri\AppData\Local\Temp\ccYNMfjV.s 			page 2
+
+
+  30:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c **** #include "trian_adc_driver.h"
+  31:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c **** 
+  32:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c **** typedef struct
+  33:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c **** {
+  34:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   /* data */
+  35:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c **** }ADC_PinConf_t;
+  36:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c **** 
+  37:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c **** 
+  38:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c **** void ADC_Init(uint8_t pinValue){
+  30              		.loc 1 38 32 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  35              		.loc 1 38 32 is_stmt 0 view .LVU1
+  36 0000 10B4     		push	{r4}
+  37              	.LCFI0:
+  38              		.cfi_def_cfa_offset 4
+  39              		.cfi_offset 4, -4
+  39:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****     RCC->AHB1ENR |= (1<<0); //activate AHB bus for PORT A
+  40              		.loc 1 39 5 is_stmt 1 view .LVU2
+  41              		.loc 1 39 8 is_stmt 0 view .LVU3
+  42 0002 154B     		ldr	r3, .L3
+  43 0004 1A6B     		ldr	r2, [r3, #48]
+  44              		.loc 1 39 18 view .LVU4
+  45 0006 42F00102 		orr	r2, r2, #1
+  46 000a 1A63     		str	r2, [r3, #48]
+  40:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****     
+  41:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****     GPIOA->MODER |= (3<<(pinValue*2)); // Pin 0 as analog
+  47              		.loc 1 41 5 is_stmt 1 view .LVU5
+  48              		.loc 1 41 10 is_stmt 0 view .LVU6
+  49 000c 134C     		ldr	r4, .L3+4
+  50 000e 2268     		ldr	r2, [r4]
+  51              		.loc 1 41 34 view .LVU7
+  52 0010 4FEA400C 		lsl	ip, r0, #1
+  53              		.loc 1 41 23 view .LVU8
+  54 0014 0321     		movs	r1, #3
+  55 0016 01FA0CF1 		lsl	r1, r1, ip
+  56              		.loc 1 41 18 view .LVU9
+  57 001a 0A43     		orrs	r2, r2, r1
+  58 001c 2260     		str	r2, [r4]
+  42:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   
+  43:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****     RCC->APB2ENR |= (1<<8); // Enable clock source for ADC1
+  59              		.loc 1 43 5 is_stmt 1 view .LVU10
+  60              		.loc 1 43 8 is_stmt 0 view .LVU11
+  61 001e 5A6C     		ldr	r2, [r3, #68]
+  62              		.loc 1 43 18 view .LVU12
+  63 0020 42F48072 		orr	r2, r2, #256
+  64 0024 5A64     		str	r2, [r3, #68]
+  44:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****     ADC1->CR1 |= (1 << 24); // set 10 bit ADC
+  65              		.loc 1 44 5 is_stmt 1 view .LVU13
+  66              		.loc 1 44 9 is_stmt 0 view .LVU14
+  67 0026 A3F58C33 		sub	r3, r3, #71680
+  68 002a 5A68     		ldr	r2, [r3, #4]
+  69              		.loc 1 44 15 view .LVU15
+  70 002c 42F08072 		orr	r2, r2, #16777216
+  71 0030 5A60     		str	r2, [r3, #4]
+ARM GAS  C:\Users\gabri\AppData\Local\Temp\ccYNMfjV.s 			page 3
+
+
+  45:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****     ADC1->CR1 &= ~(1 <<25); // set 10 bit ADC
+  72              		.loc 1 45 5 is_stmt 1 view .LVU16
+  73              		.loc 1 45 9 is_stmt 0 view .LVU17
+  74 0032 5A68     		ldr	r2, [r3, #4]
+  75              		.loc 1 45 15 view .LVU18
+  76 0034 22F00072 		bic	r2, r2, #33554432
+  77 0038 5A60     		str	r2, [r3, #4]
+  46:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   
+  47:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****     ADC1->CR2 &= ~(1<<0); // ADC Disable
+  78              		.loc 1 47 5 is_stmt 1 view .LVU19
+  79              		.loc 1 47 9 is_stmt 0 view .LVU20
+  80 003a 9A68     		ldr	r2, [r3, #8]
+  81              		.loc 1 47 15 view .LVU21
+  82 003c 22F00102 		bic	r2, r2, #1
+  83 0040 9A60     		str	r2, [r3, #8]
+  48:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****     ADC1->SQR3 |= (pinValue<<0); // Enable ADC 0th channel
+  84              		.loc 1 48 5 is_stmt 1 view .LVU22
+  85              		.loc 1 48 9 is_stmt 0 view .LVU23
+  86 0042 5A6B     		ldr	r2, [r3, #52]
+  87              		.loc 1 48 16 view .LVU24
+  88 0044 0243     		orrs	r2, r2, r0
+  89 0046 5A63     		str	r2, [r3, #52]
+  49:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****     ADC1->CR2 |= (1<<0); // ADC ON
+  90              		.loc 1 49 5 is_stmt 1 view .LVU25
+  91              		.loc 1 49 9 is_stmt 0 view .LVU26
+  92 0048 9A68     		ldr	r2, [r3, #8]
+  93              		.loc 1 49 15 view .LVU27
+  94 004a 42F00102 		orr	r2, r2, #1
+  95 004e 9A60     		str	r2, [r3, #8]
+  50:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   
+  51:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   }
+  96              		.loc 1 51 3 view .LVU28
+  97 0050 5DF8044B 		ldr	r4, [sp], #4
+  98              	.LCFI1:
+  99              		.cfi_restore 4
+ 100              		.cfi_def_cfa_offset 0
+ 101 0054 7047     		bx	lr
+ 102              	.L4:
+ 103 0056 00BF     		.align	2
+ 104              	.L3:
+ 105 0058 00380240 		.word	1073887232
+ 106 005c 00000240 		.word	1073872896
+ 107              		.cfi_endproc
+ 108              	.LFE239:
+ 110              		.section	.text.ADC_conversion,"ax",%progbits
+ 111              		.align	1
+ 112              		.global	ADC_conversion
+ 113              		.syntax unified
+ 114              		.thumb
+ 115              		.thumb_func
+ 117              	ADC_conversion:
+ 118              	.LFB240:
+  52:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   
+  53:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   void ADC_conversion(void){
+ 119              		.loc 1 53 28 is_stmt 1 view -0
+ 120              		.cfi_startproc
+ 121              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\gabri\AppData\Local\Temp\ccYNMfjV.s 			page 4
+
+
+ 122              		@ frame_needed = 0, uses_anonymous_args = 0
+ 123              		@ link register save eliminated.
+  54:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****     ADC1->CR2 |= (1<<30); // start ADC conversion
+ 124              		.loc 1 54 5 view .LVU30
+ 125              		.loc 1 54 9 is_stmt 0 view .LVU31
+ 126 0000 024A     		ldr	r2, .L6
+ 127 0002 9368     		ldr	r3, [r2, #8]
+ 128              		.loc 1 54 15 view .LVU32
+ 129 0004 43F08043 		orr	r3, r3, #1073741824
+ 130 0008 9360     		str	r3, [r2, #8]
+  55:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   
+  56:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   }
+ 131              		.loc 1 56 3 view .LVU33
+ 132 000a 7047     		bx	lr
+ 133              	.L7:
+ 134              		.align	2
+ 135              	.L6:
+ 136 000c 00200140 		.word	1073815552
+ 137              		.cfi_endproc
+ 138              	.LFE240:
+ 140              		.section	.text.ADC_read,"ax",%progbits
+ 141              		.align	1
+ 142              		.global	ADC_read
+ 143              		.syntax unified
+ 144              		.thumb
+ 145              		.thumb_func
+ 147              	ADC_read:
+ 148              	.LFB241:
+  57:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   
+  58:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   int ADC_read(void){
+ 149              		.loc 1 58 21 is_stmt 1 view -0
+ 150              		.cfi_startproc
+ 151              		@ args = 0, pretend = 0, frame = 0
+ 152              		@ frame_needed = 0, uses_anonymous_args = 0
+ 153              		@ link register save eliminated.
+ 154              	.L9:
+  59:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****     while(!(ADC1->SR & (1<<1))){
+  60:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****       //wait for conversion
+  61:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****     }
+ 155              		.loc 1 61 5 discriminator 1 view .LVU35
+  59:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****     while(!(ADC1->SR & (1<<1))){
+ 156              		.loc 1 59 11 discriminator 1 view .LVU36
+  59:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****     while(!(ADC1->SR & (1<<1))){
+ 157              		.loc 1 59 17 is_stmt 0 discriminator 1 view .LVU37
+ 158 0000 034B     		ldr	r3, .L10
+ 159 0002 1B68     		ldr	r3, [r3]
+  59:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****     while(!(ADC1->SR & (1<<1))){
+ 160              		.loc 1 59 11 discriminator 1 view .LVU38
+ 161 0004 13F0020F 		tst	r3, #2
+ 162 0008 FAD0     		beq	.L9
+  62:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****     return (ADC1->DR);
+ 163              		.loc 1 62 5 is_stmt 1 view .LVU39
+ 164              		.loc 1 62 17 is_stmt 0 view .LVU40
+ 165 000a 014B     		ldr	r3, .L10
+ 166 000c D86C     		ldr	r0, [r3, #76]
+  63:Drivers/STM32F4xx_HAL_Driver/Src/trian_adc_driver.c ****   }
+ 167              		.loc 1 63 3 view .LVU41
+ARM GAS  C:\Users\gabri\AppData\Local\Temp\ccYNMfjV.s 			page 5
+
+
+ 168 000e 7047     		bx	lr
+ 169              	.L11:
+ 170              		.align	2
+ 171              	.L10:
+ 172 0010 00200140 		.word	1073815552
+ 173              		.cfi_endproc
+ 174              	.LFE241:
+ 176              		.text
+ 177              	.Letext0:
+ 178              		.file 2 "C:\\ST\\STM32CubeCLT_1.17.0\\GNU-tools-for-STM32\\bin/../lib/gcc/arm-none-eabi/12.3.1/../
+ 179              		.file 3 "C:\\ST\\STM32CubeCLT_1.17.0\\GNU-tools-for-STM32\\bin/../lib/gcc/arm-none-eabi/12.3.1/../
+ 180              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f446xx.h"
+ARM GAS  C:\Users\gabri\AppData\Local\Temp\ccYNMfjV.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 trian_adc_driver.c
+C:\Users\gabri\AppData\Local\Temp\ccYNMfjV.s:21     .text.ADC_Init:00000000 $t
+C:\Users\gabri\AppData\Local\Temp\ccYNMfjV.s:27     .text.ADC_Init:00000000 ADC_Init
+C:\Users\gabri\AppData\Local\Temp\ccYNMfjV.s:105    .text.ADC_Init:00000058 $d
+C:\Users\gabri\AppData\Local\Temp\ccYNMfjV.s:111    .text.ADC_conversion:00000000 $t
+C:\Users\gabri\AppData\Local\Temp\ccYNMfjV.s:117    .text.ADC_conversion:00000000 ADC_conversion
+C:\Users\gabri\AppData\Local\Temp\ccYNMfjV.s:136    .text.ADC_conversion:0000000c $d
+C:\Users\gabri\AppData\Local\Temp\ccYNMfjV.s:141    .text.ADC_read:00000000 $t
+C:\Users\gabri\AppData\Local\Temp\ccYNMfjV.s:147    .text.ADC_read:00000000 ADC_read
+C:\Users\gabri\AppData\Local\Temp\ccYNMfjV.s:172    .text.ADC_read:00000010 $d
+
+NO UNDEFINED SYMBOLS

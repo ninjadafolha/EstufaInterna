@@ -20,10 +20,12 @@
 #include "main.h"
 
 
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <string.h>
 #include <stdio.h>
+//#include "trian_adc_driver.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -96,6 +98,9 @@ static void MX_I2C1_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_SPI1_Init(void);
 /* USER CODE BEGIN PFP */
+//void ADC_Init(void);
+//void ADC_conversion(void);
+//int ADC_read(void);
 
 /* USER CODE END PFP */
 
@@ -112,6 +117,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
+  
 
   /* USER CODE END 1 */
 
@@ -128,6 +134,8 @@ int main(void)
   int size_len;
   uint16_t addr = 4;
   HAL_StatusTypeDef ret;
+  uint16_t ADCData = 0;
+  uint8_t pinValue = 1;
   
   //uint32_t analog_value;
   /* USER CODE END Init */
@@ -143,8 +151,9 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   MX_I2C1_Init();
-  MX_ADC1_Init();
+  //MX_ADC1_Init();
   MX_SPI1_Init();
+  ADC_Init(pinValue);
   /* USER CODE BEGIN 2 */
 
   strcpy((char*)buf, "Start!\r\n");
@@ -162,6 +171,8 @@ int main(void)
       strcpy((char*)serialbuf, "Error Power\r\n");
       HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
   }*/
+
+  /*
     i2c_buf[0] = 0b00000001;
     ret = HAL_I2C_Master_Transmit(&hi2c1, (uint16_t)0b01000110, i2c_buf, 1, 200);
     if(ret == HAL_OK){      
@@ -184,7 +195,7 @@ int main(void)
         strcpy((char*)serialbuf, "");
         strcpy((char*)serialbuf, "Failed data\r\n");
         HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
-    }
+    }*/
 
   /* USER CODE END 2 */
 
@@ -192,6 +203,14 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    ADC_conversion();
+    
+    
+    ADCData = ADC_read();
+
+    //strcpy((char*)serialbuf, ADCData);
+    size_len = sprintf(str, "%d\r\n", ADCData);
+    HAL_UART_Transmit(&huart2, (uint8_t*)str, size_len, HAL_MAX_DELAY);
 
     //HAL_ADC_Start(&hadc1);
 	  //if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK){
@@ -317,14 +336,14 @@ void SystemClock_Config(void)
   * @param None
   * @retval None
   */
-static void MX_ADC1_Init(void)
-{
+//static void MX_ADC1_Init(void)
+//{
 
   /* USER CODE BEGIN ADC1_Init 0 */
 
   /* USER CODE END ADC1_Init 0 */
 
-  ADC_ChannelConfTypeDef sConfig = {0};
+  //ADC_ChannelConfTypeDef sConfig = {0};
 
   /* USER CODE BEGIN ADC1_Init 1 */
 
@@ -332,37 +351,37 @@ static void MX_ADC1_Init(void)
 
   /** Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion)
   */
-  hadc1.Instance = ADC1;
-  hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
-  hadc1.Init.Resolution = ADC_RESOLUTION_12B;
-  hadc1.Init.ScanConvMode = DISABLE;
-  hadc1.Init.ContinuousConvMode = DISABLE;
-  hadc1.Init.DiscontinuousConvMode = DISABLE;
-  hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
-  hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
-  hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc1.Init.NbrOfConversion = 1;
-  hadc1.Init.DMAContinuousRequests = DISABLE;
-  hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
-  if (HAL_ADC_Init(&hadc1) != HAL_OK)
-  {
-    Error_Handler();
-  }
+  //hadc1.Instance = ADC1;
+  //hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
+  //hadc1.Init.Resolution = ADC_RESOLUTION_12B;
+  //hadc1.Init.ScanConvMode = DISABLE;
+  //hadc1.Init.ContinuousConvMode = DISABLE;
+  //hadc1.Init.DiscontinuousConvMode = DISABLE;
+  //hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
+  //hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+  //hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
+  //hadc1.Init.NbrOfConversion = 1;
+  //hadc1.Init.DMAContinuousRequests = DISABLE;
+  //hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+  //if (HAL_ADC_Init(&hadc1) != HAL_OK)
+  //{
+  //  Error_Handler();
+  //}
 
   /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
   */
-  sConfig.Channel = ADC_CHANNEL_0;
-  sConfig.Rank = 1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_3CYCLES;
-  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
+  //sConfig.Channel = ADC_CHANNEL_0;
+  //sConfig.Rank = 1;
+  //sConfig.SamplingTime = ADC_SAMPLETIME_3CYCLES;
+  //if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  //{
+  //  Error_Handler();
+  //}
   /* USER CODE BEGIN ADC1_Init 2 */
 
   /* USER CODE END ADC1_Init 2 */
 
-}
+//}
 
 /**
   * @brief I2C1 Initialization Function
@@ -502,6 +521,35 @@ static void MX_SPI1_Init(){
 
 	return HAL_OK;
 }*/
+
+
+/*
+void ADC_Init(void){
+  RCC->AHB1ENR |= (1<<0); //activate AHB bus for PORT A
+  GPIOA->MODER |= (3<<0); // Pin 0 as analog
+
+  RCC->APB2ENR |= (1<<8); // Enable clock source for ADC1
+  ADC1->CR1 |= (1 << 24); // set 10 bit ADC
+  ADC1->CR1 &= ~(1 <<25); // set 10 bit ADC
+
+  ADC1->CR2 &= ~(1<<0); // ADC Disable
+  ADC1->SQR3 |= 0; // Enable ADC 0th channel
+  ADC1->CR2 |= (1<<0); // ADC ON
+
+}
+
+void ADC_conversion(void){
+  ADC1->CR2 |= (1<<30); // start ADC conversion
+
+}
+
+int ADC_read(void){
+  while(!(ADC1->SR & (1<<1))){
+    //wait for conversion
+  }
+  return (ADC1->DR);
+}
+*/
 
 /* USER CODE END 4 */
 
