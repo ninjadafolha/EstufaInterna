@@ -112,6 +112,7 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
 
   }
 
+
 }
 
 /**
@@ -176,8 +177,28 @@ void HAL_I2C_MspInit(I2C_HandleTypeDef* hi2c)
 
   /* USER CODE END I2C1_MspInit 1 */
 
-  }
+  }  else if (hi2c->Instance == I2C2)
+  {
+    /* code */
+    __HAL_RCC_GPIOB_CLK_ENABLE();
+    //__HAL_RCC_GPIOC_CLK_ENABLE();
 
+    GPIO_InitStruct.Pin = GPIO_PIN_10;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF4_I2C2;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+    GPIO_InitStruct.Pin = GPIO_PIN_12;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF4_I2C2;
+    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+    __HAL_RCC_I2C2_CLK_ENABLE();
+  }
 }
 
 /**

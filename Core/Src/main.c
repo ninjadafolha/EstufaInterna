@@ -35,26 +35,6 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-//Device Address
-//Please note that arduino uses 7 bit addresses, STM32 uses 8
-#define BH1750_NO_GROUND_ADDR_WRITE     (0xB9 + 0)
-#define BH1750_NO_GROUND_ADDR_READ      (0xB9 + 1)
-#define BH1750_GROUND_ADDR_WRITE        (0x46 + 0)
-#define BH1750_GROUND_ADDR_READ         (0x46 + 1)
-
-//instructions
-//datasheet ref http://cpre.kmutnb.ac.th/esl/learning/bh1750-light-sensor/bh1750fvi-e_datasheet.pdf
-#define CMD_POWER_DOWN          0x00
-#define CMD_POWER_ON            0x01
-#define CMD_RESET               0x03
-#define CMD_H_RES_MODE          0x10
-#define CMD_H_RES_MODE2         0x11
-#define CMD_L_RES_MODE          0x13
-#define CMD_ONE_H_RES_MODE      0x20
-#define CMD_ONE_H_RES_MODE2     0x21
-#define CMD_ONE_L_RES_MODE      0x23
-#define CMD_CNG_TIME_HIGH       0x30    // 3 LSB set time
-#define CMD_CNG_TIME_LOW        0x60    // 5 LSB set time
 
 #ifndef bool
 #define bool    uint8_t
@@ -80,12 +60,14 @@ ADC_HandleTypeDef hadc1;
 
 I2C_HandleTypeDef hi2c1;
 
+I2C_HandleTypeDef hi2c2;
+
 UART_HandleTypeDef huart2;
 
 SPI_HandleTypeDef hspi1;
 
 /* USER CODE BEGIN PV */
-static const uint16_t BH1750_ADDR = 0x23;
+static const uint16_t BH1750_ADDR = 0x23 << 1;
 uint8_t buff[2];
 
 /* USER CODE END PV */
@@ -95,6 +77,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_I2C1_Init(void);
+static void MX_I2C2_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_SPI1_Init(void);
 /* USER CODE BEGIN PFP */
@@ -129,7 +112,7 @@ int main(void)
   /* USER CODE BEGIN Init */
 
   uint8_t buf[12], i2c_buf[2], serialbuf[20];
-  char str[32];
+  char str[32], str2[32];
   uint32_t analog_value;
   int size_len;
   uint16_t addr = 4;
@@ -151,6 +134,7 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   MX_I2C1_Init();
+  MX_I2C2_Init();
   //MX_ADC1_Init();
   MX_SPI1_Init();
   ADC_Init(pinValue);
@@ -160,42 +144,23 @@ int main(void)
   HAL_UART_Transmit(&huart2, buf, strlen((char*)buf), HAL_MAX_DELAY);
   //strcpy((char*)buf, "Hello!\r\n");
 
-  
-  /*ret = HAL_I2C_Master_Transmit(&hi2c1, BH1750_GROUND_ADDR_WRITE, i2c_buf, 1, 200);
-  if(ret == HAL_OK){ 
-      strcpy((char*)serialbuf, "");
-      strcpy((char*)serialbuf, "Power ON\r\n");
-      HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
+
+  strcpy((char*)i2c_buf, "");
+  ret = HAL_I2C_Master_Transmit(&hi2c2, 0x46, 0x01, 1, 200);
+  if(ret == HAL_OK){
+    strcpy((char*)serialbuf, "");
+    strcpy((char*)serialbuf, "Transmited Data\r\n");
+    HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
   }else{
-      strcpy((char*)serialbuf, "");
-      strcpy((char*)serialbuf, "Error Power\r\n");
-      HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
-  }*/
+    strcpy((char*)serialbuf, "");
+    strcpy((char*)serialbuf, "Transmit Failed\r\n");
+    HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
+  }
 
-  /*
-    i2c_buf[0] = 0b00000001;
-    ret = HAL_I2C_Master_Transmit(&hi2c1, (uint16_t)0b01000110, i2c_buf, 1, 200);
-    if(ret == HAL_OK){      
-      strcpy((char*)serialbuf, "");
-      strcpy((char*)serialbuf, "Transmited 1\r\n");
-      HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
-    }else{
-        strcpy((char*)serialbuf, "");
-        strcpy((char*)serialbuf, "Failed Power\r\n");
-        HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
-    }
 
-    i2c_buf[0] = 0b00010000;
-    ret = HAL_I2C_Master_Transmit(&hi2c1, (uint16_t)0b01000110, i2c_buf, 1, 200);
-    if(ret == HAL_OK){      
-      strcpy((char*)serialbuf, "");
-      strcpy((char*)serialbuf, "Transmited 2\r\n");
-      HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
-    }else{
-        strcpy((char*)serialbuf, "");
-        strcpy((char*)serialbuf, "Failed data\r\n");
-        HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
-    }*/
+
+  HAL_Delay(200);
+
 
   /* USER CODE END 2 */
 
@@ -208,74 +173,68 @@ int main(void)
     
     ADCData = ADC_read();
 
-    //strcpy((char*)serialbuf, ADCData);
+    /*
+    strcpy((char*)serialbuf, ADCData);
     size_len = sprintf(str, "%d\r\n", ADCData);
     HAL_UART_Transmit(&huart2, (uint8_t*)str, size_len, HAL_MAX_DELAY);
-
-    //HAL_ADC_Start(&hadc1);
-	  //if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK){
-
-		  //analog_value = HAL_ADC_GetValue(&hadc1);
-      //size_len = sprintf(str, "%lu\r\n", analog_value);
-      //HAL_UART_Transmit(&huart2, (uint8_t*)str, size_len, HAL_MAX_DELAY);
-	  //}
-	  //HAL_ADC_Stop(&hadc1);
-	  //HAL_Delay(1000);
-
-
-    /*
-	  ret = BH1750_send_command(dev, CMD_RESET);
-        if(ret == HAL_OK){ 
-      strcpy((char*)serialbuf, "");
-      strcpy((char*)serialbuf, "Reset\r\n");
-      HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
-      }else{
-        strcpy((char*)serialbuf, "");
-        strcpy((char*)serialbuf, "Reset Fail\r\n");
-        HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
-      }
-
-	  ret = BH1750_send_command(dev, CMD_H_RES_MODE);
-        if(ret == HAL_OK){ 
-      strcpy((char*)serialbuf, "");
-      strcpy((char*)serialbuf, "RES MODE ON\r\n");
-      HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
-      }else{
-        strcpy((char*)serialbuf, "");
-        strcpy((char*)serialbuf, "RES MODE FAIL\r\n");
-        HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
-      }
-
-    ret = HAL_I2C_Master_Transmit(&hi2c1, BH1750_ADDR, i2c_buf, 1, 200);
-    if(ret != HAL_OK){
-      strcpy((char*)serialbuf, "Error Rx\r\n");
-      HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
-    }*/
-  
-    //HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
-    //HAL_UART_Transmit(&huart2, buf, strlen((char*)buf), HAL_MAX_DELAY);
-    //HAL_Delay(500);
+    */
+    
     
 
+
+    
     strcpy((char*)i2c_buf, "");
-    ret = HAL_I2C_Master_Receive(&hi2c1, (uint16_t)0b01000111, i2c_buf, 2, 200);
-    if(ret == HAL_OK){      
+    ret = HAL_I2C_Master_Transmit(&hi2c2, 0x46, 0x03, 1, 200);
+    /*
+    if(ret == HAL_OK){
+      strcpy((char*)serialbuf, "");
+      strcpy((char*)serialbuf, "Transmited Data\r\n");
+      HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
+    }else{
+      strcpy((char*)serialbuf, "");
+      strcpy((char*)serialbuf, "Transmit Failed\r\n");
+      HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
+    }
+  */
+
+    HAL_Delay(200);
+
+    ret = HAL_I2C_Master_Transmit(&hi2c2, 0x46, 0x10, 1, 200);
+    /*
+    if(ret == HAL_OK){
+      strcpy((char*)serialbuf, "");
+      strcpy((char*)serialbuf, "Transmited Data\r\n");
+      HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
+    }else{
+      strcpy((char*)serialbuf, "");
+      strcpy((char*)serialbuf, "Transmit Failed\r\n");
+      HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
+  }
+  */ 
+  
+  HAL_Delay(200);
+
+
+    ret = HAL_I2C_Master_Receive(&hi2c2, (0x46 + 1), i2c_buf, 2, 200);
+    if(ret != HAL_OK){      
       //size_len = sprintf(str, "%lu\r\n", i2c_buf);
       //uint8_t a = i2c_buf[0];
       //uint8_t b = i2c_buf[1];
-      strcpy((char*)serialbuf, "");
-      strcpy((char*)serialbuf, "Received Data\r\n");
-      HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
-      uint16_t raw_lux = (i2c_buf[0] << 8 | i2c_buf[1]);
-      float lux = raw_lux/1.2;
-      sprintf(str, sizeof(str), "<%.2f>", lux);
-      HAL_UART_Transmit(&huart2, (uint8_t*)str, strlen(str), HAL_MAX_DELAY);
-    }else{
+    //  strcpy((char*)serialbuf, "");
+    //  strcpy((char*)serialbuf, "Received Data\r\n");
+    //  HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
+    //}else{
         strcpy((char*)serialbuf, "");
         strcpy((char*)serialbuf, "Failed\r\n");
         HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
     }
-    HAL_Delay(1000);
+
+    uint16_t raw_lux = ((i2c_buf[0] << 8 | i2c_buf[1])/1.2);
+      //float lux = raw_lux/1.2;
+      //strcpy((char*)str, "");
+    sprintf(str2,"%u\r\n", raw_lux);
+    HAL_UART_Transmit(&huart2, (uint8_t*)str2, strlen(str2), HAL_MAX_DELAY);
+    HAL_Delay(500);
     
     /* USER CODE END WHILE */
 
@@ -414,6 +373,23 @@ static void MX_I2C1_Init(void)
   /* USER CODE BEGIN I2C1_Init 2 */
 
   /* USER CODE END I2C1_Init 2 */
+
+}
+
+static void MX_I2C2_Init(void){
+
+  hi2c2.Instance = I2C2;
+  hi2c2.Init.ClockSpeed = 100000;
+  hi2c2.Init.DutyCycle = I2C_DUTYCYCLE_2;
+  hi2c2.Init.OwnAddress1 = 0;
+  hi2c2.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c2.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c2.Init.OwnAddress2 = 0;
+  hi2c2.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c2.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if(HAL_I2C_Init(&hi2c2) != HAL_OK){
+    Error_Handler();
+  }
 
 }
 
