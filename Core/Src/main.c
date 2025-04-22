@@ -6,73 +6,26 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2025 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
   ******************************************************************************
-  */
-/* USER CODE END Header */
-/* Includes ------------------------------------------------------------------*/
+*/
+
+/* Includes*/
 #include "main.h"
 
-
-
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
 #include <string.h>
 #include <stdio.h>
-//#include "trian_adc_driver.h"
-/* USER CODE END Includes */
+#include "trian_adc_driver.h"
 
-/* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN PTD */
-
-/* USER CODE END PTD */
-
-/* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
-
-#ifndef bool
-#define bool    uint8_t
-#endif
-
-#ifndef true
-#define true    1
-#endif
-
-#ifndef false
-#define false   0
-#endif
-
-/* USER CODE END PD */
-
-/* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
-
-/* USER CODE END PM */
-
-/* Private variables ---------------------------------------------------------*/
+/* Private variables*/
 ADC_HandleTypeDef hadc1;
-
 I2C_HandleTypeDef hi2c1;
-
 I2C_HandleTypeDef hi2c2;
-
 UART_HandleTypeDef huart2;
-
 SPI_HandleTypeDef hspi1;
 
-/* USER CODE BEGIN PV */
 static const uint16_t BH1750_ADDR = 0x23 << 1;
-uint8_t buff[2];
 
-/* USER CODE END PV */
-
-/* Private function prototypes -----------------------------------------------*/
+/* Private function prototypes */
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
@@ -80,17 +33,14 @@ static void MX_I2C1_Init(void);
 static void MX_I2C2_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_SPI1_Init(void);
-/* USER CODE BEGIN PFP */
+
 //void ADC_Init(void);
 //void ADC_conversion(void);
 //int ADC_read(void);
 
-/* USER CODE END PFP */
 
-/* Private user code ---------------------------------------------------------*/
-/* USER CODE BEGIN 0 */
+/* Private user code */
 
-/* USER CODE END 0 */
 
 /**
   * @brief  The application entry point.
@@ -99,17 +49,10 @@ static void MX_SPI1_Init(void);
 int main(void)
 {
 
-  /* USER CODE BEGIN 1 */
-  
-
-  /* USER CODE END 1 */
-
-  /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
 
-  /* USER CODE BEGIN Init */
 
   uint8_t buf[12], i2c_buf[2], serialbuf[20];
   char str[32], str2[32];
@@ -138,34 +81,24 @@ int main(void)
   //MX_ADC1_Init();
   MX_SPI1_Init();
   ADC_Init(pinValue);
-  /* USER CODE BEGIN 2 */
 
   strcpy((char*)buf, "Start!\r\n");
   HAL_UART_Transmit(&huart2, buf, strlen((char*)buf), HAL_MAX_DELAY);
-  //strcpy((char*)buf, "Hello!\r\n");
 
 
   strcpy((char*)i2c_buf, "");
   ret = HAL_I2C_Master_Transmit(&hi2c2, 0x46, 0x01, 1, 200);
-  if(ret == HAL_OK){
-    strcpy((char*)serialbuf, "");
-    strcpy((char*)serialbuf, "Transmited Data\r\n");
-    HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
-  }else{
+  if(ret != HAL_OK){
     strcpy((char*)serialbuf, "");
     strcpy((char*)serialbuf, "Transmit Failed\r\n");
     HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
   }
 
-
-
   HAL_Delay(200);
 
 
-  /* USER CODE END 2 */
-
   /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
+
   while (1)
   {
     ADC_conversion();
@@ -180,53 +113,18 @@ int main(void)
     */
     
     
-
-
-    
     strcpy((char*)i2c_buf, "");
     ret = HAL_I2C_Master_Transmit(&hi2c2, 0x46, 0x03, 1, 200);
-    /*
-    if(ret == HAL_OK){
-      strcpy((char*)serialbuf, "");
-      strcpy((char*)serialbuf, "Transmited Data\r\n");
-      HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
-    }else{
-      strcpy((char*)serialbuf, "");
-      strcpy((char*)serialbuf, "Transmit Failed\r\n");
-      HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
-    }
-  */
-
     HAL_Delay(200);
-
     ret = HAL_I2C_Master_Transmit(&hi2c2, 0x46, 0x10, 1, 200);
-    /*
-    if(ret == HAL_OK){
-      strcpy((char*)serialbuf, "");
-      strcpy((char*)serialbuf, "Transmited Data\r\n");
-      HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
-    }else{
-      strcpy((char*)serialbuf, "");
-      strcpy((char*)serialbuf, "Transmit Failed\r\n");
-      HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
-  }
-  */ 
-  
-  HAL_Delay(200);
+    HAL_Delay(200);
 
 
     ret = HAL_I2C_Master_Receive(&hi2c2, (0x46 + 1), i2c_buf, 2, 200);
     if(ret != HAL_OK){      
-      //size_len = sprintf(str, "%lu\r\n", i2c_buf);
-      //uint8_t a = i2c_buf[0];
-      //uint8_t b = i2c_buf[1];
-    //  strcpy((char*)serialbuf, "");
-    //  strcpy((char*)serialbuf, "Received Data\r\n");
-    //  HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
-    //}else{
-        strcpy((char*)serialbuf, "");
-        strcpy((char*)serialbuf, "Failed\r\n");
-        HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
+      strcpy((char*)serialbuf, "");
+      strcpy((char*)serialbuf, "Failed\r\n");
+      HAL_UART_Transmit(&huart2, serialbuf, strlen((char*)serialbuf), HAL_MAX_DELAY);
     }
 
     uint16_t raw_lux = ((i2c_buf[0] << 8 | i2c_buf[1])/1.2);
@@ -236,11 +134,7 @@ int main(void)
     HAL_UART_Transmit(&huart2, (uint8_t*)str2, strlen(str2), HAL_MAX_DELAY);
     HAL_Delay(500);
     
-    /* USER CODE END WHILE */
-
-    /* USER CODE BEGIN 3 */
   }
-  /* USER CODE END 3 */
 }
 
 /**
@@ -290,57 +184,6 @@ void SystemClock_Config(void)
   }
 }
 
-/**
-  * @brief ADC1 Initialization Function
-  * @param None
-  * @retval None
-  */
-//static void MX_ADC1_Init(void)
-//{
-
-  /* USER CODE BEGIN ADC1_Init 0 */
-
-  /* USER CODE END ADC1_Init 0 */
-
-  //ADC_ChannelConfTypeDef sConfig = {0};
-
-  /* USER CODE BEGIN ADC1_Init 1 */
-
-  /* USER CODE END ADC1_Init 1 */
-
-  /** Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion)
-  */
-  //hadc1.Instance = ADC1;
-  //hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
-  //hadc1.Init.Resolution = ADC_RESOLUTION_12B;
-  //hadc1.Init.ScanConvMode = DISABLE;
-  //hadc1.Init.ContinuousConvMode = DISABLE;
-  //hadc1.Init.DiscontinuousConvMode = DISABLE;
-  //hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
-  //hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
-  //hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  //hadc1.Init.NbrOfConversion = 1;
-  //hadc1.Init.DMAContinuousRequests = DISABLE;
-  //hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
-  //if (HAL_ADC_Init(&hadc1) != HAL_OK)
-  //{
-  //  Error_Handler();
-  //}
-
-  /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
-  */
-  //sConfig.Channel = ADC_CHANNEL_0;
-  //sConfig.Rank = 1;
-  //sConfig.SamplingTime = ADC_SAMPLETIME_3CYCLES;
-  //if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
-  //{
-  //  Error_Handler();
-  //}
-  /* USER CODE BEGIN ADC1_Init 2 */
-
-  /* USER CODE END ADC1_Init 2 */
-
-//}
 
 /**
   * @brief I2C1 Initialization Function
@@ -350,13 +193,6 @@ void SystemClock_Config(void)
 static void MX_I2C1_Init(void)
 {
 
-  /* USER CODE BEGIN I2C1_Init 0 */
-
-  /* USER CODE END I2C1_Init 0 */
-
-  /* USER CODE BEGIN I2C1_Init 1 */
-
-  /* USER CODE END I2C1_Init 1 */
   hi2c1.Instance = I2C1;
   hi2c1.Init.ClockSpeed = 100000;
   hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
@@ -370,12 +206,14 @@ static void MX_I2C1_Init(void)
   {
     Error_Handler();
   }
-  /* USER CODE BEGIN I2C1_Init 2 */
-
-  /* USER CODE END I2C1_Init 2 */
 
 }
 
+/**
+  * @brief I2C2 Initialization Function
+  * @param None
+  * @retval None
+*/
 static void MX_I2C2_Init(void){
 
   hi2c2.Instance = I2C2;
@@ -401,13 +239,6 @@ static void MX_I2C2_Init(void){
 static void MX_USART2_UART_Init(void)
 {
 
-  /* USER CODE BEGIN USART2_Init 0 */
-
-  /* USER CODE END USART2_Init 0 */
-
-  /* USER CODE BEGIN USART2_Init 1 */
-
-  /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
   huart2.Init.BaudRate = 115200;
   huart2.Init.WordLength = UART_WORDLENGTH_8B;
@@ -420,9 +251,6 @@ static void MX_USART2_UART_Init(void)
   {
     Error_Handler();
   }
-  /* USER CODE BEGIN USART2_Init 2 */
-
-  /* USER CODE END USART2_Init 2 */
 
 }
 
@@ -434,8 +262,6 @@ static void MX_USART2_UART_Init(void)
 static void MX_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
-/* USER CODE BEGIN MX_GPIO_Init_1 */
-/* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOC_CLK_ENABLE();
@@ -459,12 +285,10 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
 
-/* USER CODE BEGIN MX_GPIO_Init_2 */
-/* USER CODE END MX_GPIO_Init_2 */
 }
 
-/* USER CODE BEGIN 4 */
 
+/* USER CODE BEGIN 4 */
 static void MX_SPI1_Init(){
 
   hspi1.Instance = SPI1;
@@ -483,49 +307,6 @@ static void MX_SPI1_Init(){
     Error_Handler();
 }
 
-/* START OF BH1750 COMMUNICATION FUNCTIONS*/
-/*HAL_StatusTypeDef BH1750_send_command(BH1750_device_t* dev, uint8_t cmd)
-{
-	//TODO hal checks
-	if(HAL_I2C_Master_Transmit(
-			dev->i2c_handle,	//I2C Handle
-			dev->address_w,		//I2C addr of dev
-			&cmd,				//CMD to be executed
-			1,					//8bit addr
-			10					//Wait time
-		) != HAL_OK) return HAL_ERROR;
-
-	return HAL_OK;
-}*/
-
-
-/*
-void ADC_Init(void){
-  RCC->AHB1ENR |= (1<<0); //activate AHB bus for PORT A
-  GPIOA->MODER |= (3<<0); // Pin 0 as analog
-
-  RCC->APB2ENR |= (1<<8); // Enable clock source for ADC1
-  ADC1->CR1 |= (1 << 24); // set 10 bit ADC
-  ADC1->CR1 &= ~(1 <<25); // set 10 bit ADC
-
-  ADC1->CR2 &= ~(1<<0); // ADC Disable
-  ADC1->SQR3 |= 0; // Enable ADC 0th channel
-  ADC1->CR2 |= (1<<0); // ADC ON
-
-}
-
-void ADC_conversion(void){
-  ADC1->CR2 |= (1<<30); // start ADC conversion
-
-}
-
-int ADC_read(void){
-  while(!(ADC1->SR & (1<<1))){
-    //wait for conversion
-  }
-  return (ADC1->DR);
-}
-*/
 
 /* USER CODE END 4 */
 
